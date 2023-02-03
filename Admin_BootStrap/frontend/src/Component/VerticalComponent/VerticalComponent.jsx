@@ -31,23 +31,23 @@ function VerticalComponent() {
         <div className="Data">
           <ListGroupItem className="new">
             <img src={ImgNews} alt="" />
-            <p>News</p>
+            <a className="NavItems" href="/">News</a>
           </ListGroupItem>
           <ListGroupItem className="new">
             <img src={Categories} alt="" />
-            <p> Categories </p>
+            <a className="NavItems" href="/AddCategory"> Categories </a>
           </ListGroupItem>
           <ListGroupItem className="new">
             <img src={Ebook} alt="" />
-            <p>E-News </p>
+            <a className="NavItems" href="/AddPaper">E-News </a>
           </ListGroupItem>
           <ListGroupItem className="new">
             <img src={BreakingNews} alt="" />
-            <p> Breaking News </p>
+            <a  className="NavItems" href="/BreakingNews"> Breaking News </a>
           </ListGroupItem>
           <ListGroupItem className="new">
             <img src={Video} alt="" />
-            <p> Add Videos </p>
+            <a className="NavItems" href="/AddVideos"> Add Videos </a>
           </ListGroupItem>
         </div>
       </ListGroup>
