@@ -51,8 +51,8 @@ function NewsAddingPage() {
   return (
     <Card
       style={{
-        width: "80rem",
-        height: "80vh",
+        width: "69rem",
+        height: "46rem",
         marginLeft: "5rem",
         marginTop: "3rem",
         marginBottom: "2rem",
