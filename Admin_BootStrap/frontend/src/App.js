@@ -7,6 +7,7 @@ import VerticalComponent from "./Component/VerticalComponent/VerticalComponent";
 import BreakingNews from "./Pages/BreakingNews/BreakingNews";
 import AddPaper from "./Pages/AddPaper/AddPaper";
 import AddCategory from "./Pages/AddCategory/AddCategory";
+import AddVideos from "./Pages/AddVideos/AddVideos"
 import Login from "./Pages/Admin Login/Login";
 import NewsAddingPage from "./Pages/NewsAddingPage/NewsAddingPage";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -32,7 +33,8 @@ function App() {
           {/* <AddPaper /> */}
           {/* <AddCategory/> */}
           {/* <NewsAddingPage/> */}
-          {/* <Login /> */}
+          {/* <AddVideos /> */}
+          <Login />
         </Col>
       </Row>
     </div>
