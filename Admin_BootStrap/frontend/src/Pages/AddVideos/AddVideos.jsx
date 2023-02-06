@@ -1,55 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from 'react'
 import { Card, CardBody, FormGroup, Label, Input, Button } from "reactstrap";
-import axios from "axios";
-
-function NewsAddingPage() {
 
 
-
-  const NewsTittle = useRef("");
-  const News = useRef("");
-  const Catego = useRef({});
-  const [files, setFiles] = useState();
-
-  const [resData, setResData] = useState([]);
-
-  const values = async() => {
-    const header = new Headers();
-    header.append('Access-Control-Allow-Origin', '*');
-    let formData = new FormData();
-    // console.log(Catego.current.value);
-    // console.log(News.current.value);
-    // const data = {
-    //  " Category":  Catego.current.value,
-    //   "NewsTittle": NewsTittle.current.value,
-    //   "News": News.current.value
-    // }
-  formData.append("files", files);
-  await formData.append("Category", Catego.current.value);
-  await formData.append("News", News.current.value);
-  await formData.append("NewsTittle", NewsTittle.current.value);
-
-    console.log(Catego.current.value);
-
-
-    axios.post("http://localhost:5000/call/AddNewsDetail",formData ).then((response) => {
-      console.log(response);
-    });
-  };
-
-  // console.log(resData[0].Category.GujCategory);
-
-  useEffect(() => {
-    axios.get("http://localhost:5000/call/GetCategory").then((response) => {
-      setResData(response.data);
-    });
-
-    return () => {};
-  }, []);
-
-  console.log(resData);
+function AddVideos() {
   return (
-    <Card
+    <>
+<Card
       style={{
         width: "69rem",
         height: "46rem",
@@ -65,7 +21,7 @@ function NewsAddingPage() {
             for="exampleSelect"
             style={{ fontWeight: "500", marginLeft: "0.5%" }}
           >
-            Select News Category
+            Select News Video
           </Label>
           <Input
             id="exampleSelect"
@@ -73,12 +29,12 @@ function NewsAddingPage() {
             type="select"
             bsSize="lg"
             style={{ width: "30%" }}
-            innerRef={Catego}
+            // innerRef={Catego}
             
           >
-            {resData.map((item, index) => {
+            {/* {resData.map((item, index) => {
               return <option key={index} value={item.Category.EngCategory}>{item.Category.GujCategory} </option>;
-            })}
+            })} */}
 
             {/* <option>ભારત</option>
             <option>રાજકારણ</option>
@@ -90,7 +46,7 @@ function NewsAddingPage() {
             for="exampleFile"
             style={{ fontWeight: "500", marginLeft: "0.5%" }}
           >
-            Select Image Or Video
+            Select Video
           </Label>
           <Input
             id="exampleFile"
@@ -99,7 +55,7 @@ function NewsAddingPage() {
             style={{ width: "30%" }}
             accept="image/jpeg, image/jpg, video/mp4"
             onChange={(e) => {
-              setFiles(e.target.files[0]);
+            //   setFiles(e.target.files[0]);
             }}
           />
           <br />
@@ -108,7 +64,7 @@ function NewsAddingPage() {
             for="exampleEmail"
             style={{ fontWeight: "500", marginLeft: "0.5%" }}
           >
-            News Tittle
+            Video Tittle
           </Label>
 
           <Input
@@ -117,7 +73,7 @@ function NewsAddingPage() {
             // placeholder="with a placeholder"
             type="text"
             style={{ width: "60%" }}
-            innerRef={NewsTittle}
+            // innerRef={NewsTittle}
           />
           <br />
 
@@ -132,7 +88,7 @@ function NewsAddingPage() {
             name="text"
             type="textarea"
             style={{ height: "20rem", width: "85%" }}
-            innerRef={News}
+            // innerRef={News}
           />
           <br />
           <Button
@@ -141,12 +97,13 @@ function NewsAddingPage() {
             type="submit"
             value="Submit"
             style={{ fontWeight: "500", marginLeft: "0.5%" }}
-            onClick={values}
+            // onClick={values}
           />
         </FormGroup>
       </CardBody>
     </Card>
-  );
+    </>
+  )
 }
 
-export default NewsAddingPage;
+export default AddVideos

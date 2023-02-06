@@ -16,7 +16,13 @@
 .Data p{
     display: inline;
 }
-
+.NavItems{
+    text-decoration: none;
+    color: #FFF;
+}
+.NavItems:hover{
+    color: yellow;
+}
 /* @media only screen and (max-width: 1085px){
     .Data p{
         display: block;
