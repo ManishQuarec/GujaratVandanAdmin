@@ -34,7 +34,7 @@ function DeleteNews (deleteBreakingnewsModal, handleCloseDeleteModal) {
 
     } else {
       axios
-        .post("http://localhost:5000/call/DeleteBreakingNews", {
+        .post(process.env.REACT_APP_API_BASE_URL+"/DeleteBreakingNews", {
           srno: srno.current.value,
         })
         .then(async (response) => {

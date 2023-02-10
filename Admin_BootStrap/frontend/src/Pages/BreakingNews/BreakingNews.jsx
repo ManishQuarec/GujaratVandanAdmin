@@ -56,7 +56,7 @@ function BreakingNews() {
     useEffect( () => {
      
       
-      axios.get("http://localhost:5000/call/allBreakingNews").then(async(response)=> {
+      axios.get(process.env.REACT_APP_API_BASE_URL+"/allBreakingNews").then(async(response)=> {
        await setNewsData(response.data.response);
         // console.log(response.data.response);
       })

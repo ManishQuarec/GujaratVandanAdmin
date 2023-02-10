@@ -9,68 +9,99 @@ import {
   Input,
   FormGroup,
   Label,
+  Alert,
 } from "reactstrap";
 import axios from "axios";
 
 function AddCategoryButton(addCategoryModal, handleCloseNewsModal) {
   const GujInput = useRef("");
-  const EngInput  = useRef("");
+  const EngInput = useRef("");
+  const [alert, setAlert] = useState(false);
+  const [failAlert, setFailAlert] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const DataValues = async() => {
-   const  data = {
-    "EngInput": EngInput.current.value,
-    "GujInput": GujInput.current.value
-   }
-   await axios.post("http://localhost:5000/call/AddingCategory", data );
+  const DataValues = async () => {
+
+
+    const data = {
+      EngInput: EngInput.current.value,
+      GujInput: GujInput.current.value,
+    };
+
+    if ( data.EngInput == "" || data.GujInput == "") {
+     
+      setFailAlert(true);
+      setMessage("Please Enter Category in Gujarati and English");
+
+      await setTimeout(() => {
+        setFailAlert(false);
+        setMessage("");
+        handleCloseNewsModal();
+      }, 2500);
+
+    }else{
+    await axios
+      .post(process.env.REACT_APP_API_BASE_URL + "/AddingCategory", data)
+      .then(async (response) => {
+        if (response.status == 200) {
+          setAlert(true);
+          setMessage("Success");
+
+          await setTimeout(() => {
+            setAlert(false);
+            setMessage("");
+            handleCloseNewsModal();
+          }, 2500);
+        }
+      })
+      .catch(async (error) => {
+        setFailAlert(true);
+        setMessage("Failed");
+
+        await setTimeout(() => {
+          setFailAlert(false);
+          setMessage("");
+          handleCloseNewsModal();
+        }, 2500);
+      });
+
+    }
   };
-  // const [state, setState] = useState(false);
-
-  // console.log(state);
+ 
 
   return (
     <React.Fragment>
       <Modal isOpen={addCategoryModal} centered={true}>
-        <ModalHeader>Add Category </ModalHeader>
+        <ModalHeader>Add Category</ModalHeader>
+        <Alert
+          color={alert ? "success" : "danger"}
+          style={{ width: "80%", marginLeft: "20%", marginTop: "1%" }}
+          isOpen={alert || failAlert}
+        >
+          {message}
+        </Alert>
+
         <ModalBody>
           <div>
             <FormGroup switch>
-              {/* <Input
-                type="checkbox"
-                data-toggle="toggle"
-                checked={state}
-                onChange={() => {
-                  setState(!state);
-                }}
-              />
+        
 
-              <Label check>Add SubCategory</Label> */}
+             
             </FormGroup>
 
             <Form>
-              {/* <CustomInput
-                  type="text"
-                  placeholder="Enter Your Category"
-                  name="category_name"
-                  values={values}
-                  handleChange={handleChange}
-                  touched={touched}
-                  errors={errors}
-                  style={{
-                    borderWidth: 2,
-                    borderColor: "#000000",
-                  }}
-                /> */}
-              <Label style={{ fontWeight: "500" }}>Category Name in Gujarati:</Label> &nbsp;
+          
+              <Label style={{ fontWeight: "500" }}>
+                Category Name in Gujarati:
+              </Label>{" "}
+              &nbsp;
               <Input type="text" innerRef={GujInput} />
-              <Label style={{ fontWeight: "500" }}>Category Name in English:</Label> &nbsp;
+              <Label style={{ fontWeight: "500" }}>
+                Category Name in English:
+              </Label>{" "}
+              &nbsp;
               <Input type="text" innerRef={EngInput} />
-              {/* {state ? (
-                <>
-                <br/>
-                  <Label style={{fontWeight:"500"}}>Add SubCategory Name:</Label> &nbsp;
-                  <input type="text" />
-                </>
-              ) : null} */}
+       
               <ModalFooter>
                 <Button type="button" onClick={DataValues}>
                   Create

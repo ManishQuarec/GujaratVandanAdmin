@@ -50,7 +50,7 @@ console.log(files);
     formData.append("month", `${startDate.getMonth() + 1}`);
     
 
-    axios.post("http://localhost:5000/call/AddingNewsPaper", formData, {
+    axios.post(process.env.REACT_APP_API_BASE_URL+"/AddingNewsPaper", formData, {
       headers: {
         "Content-Type": "application/pdf",
       },

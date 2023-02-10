@@ -87,7 +87,7 @@ function AddNews(addBreakingnewsModal, handleCloseNewsModal) {
       errorPopup(dtl);
     } else {
       axios
-        .post("http://localhost:5000/call/AddingNews", data)
+        .post(process.env.REACT_APP_API_BASE_URL+"/AddingNews", data)
         .then(async(response) => {
           if (response.data.status === "Successfully") {
             // console.log(response.data.status);

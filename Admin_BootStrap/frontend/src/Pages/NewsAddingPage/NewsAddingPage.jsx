@@ -4,45 +4,45 @@ import axios from "axios";
 
 function NewsAddingPage() {
 
+  const handleChange= (e) =>{
 
-
+    setFiles(e.target.files[0]);
+  }
   const NewsTittle = useRef("");
   const News = useRef("");
   const Catego = useRef({});
   const [files, setFiles] = useState();
+  // const [Videofiles, setVideoFiles] = useState();
 
   const [resData, setResData] = useState([]);
 
-  const values = async() => {
+  const values = async () => {
     const header = new Headers();
-    header.append('Access-Control-Allow-Origin', '*');
+    header.append("Access-Control-Allow-Origin", "*");
     let formData = new FormData();
-    // console.log(Catego.current.value);
-    // console.log(News.current.value);
-    // const data = {
-    //  " Category":  Catego.current.value,
-    //   "NewsTittle": NewsTittle.current.value,
-    //   "News": News.current.value
-    // }
-  formData.append("files", files);
-  await formData.append("Category", Catego.current.value);
-  await formData.append("News", News.current.value);
-  await formData.append("NewsTittle", NewsTittle.current.value);
+
+    formData.append("files", files);
+    // formData.append("Videofiles", Videofiles);
+
+    await formData.append("Category", Catego.current.value);
+    await formData.append("News", News.current.value);
+    await formData.append("NewsTittle", NewsTittle.current.value);
 
     console.log(Catego.current.value);
 
-
-    axios.post("http://localhost:5000/call/AddNewsDetail",formData ).then((response) => {
-      console.log(response);
-    });
+    axios
+      .post(process.env.REACT_APP_API_BASE_URL + "/AddNewsDetail", formData)
+      .then((response) => {
+        console.log(response);
+      });
   };
 
-  // console.log(resData[0].Category.GujCategory);
-
   useEffect(() => {
-    axios.get("http://localhost:5000/call/GetCategory").then((response) => {
-      setResData(response.data);
-    });
+    axios
+      .get(process.env.REACT_APP_API_BASE_URL + "/GetCategory")
+      .then((response) => {
+        setResData(response.data);
+      });
 
     return () => {};
   }, []);
@@ -74,34 +74,34 @@ function NewsAddingPage() {
             bsSize="lg"
             style={{ width: "30%" }}
             innerRef={Catego}
-            
           >
             {resData.map((item, index) => {
-              return <option key={index} value={item.Category.EngCategory}>{item.Category.GujCategory} </option>;
+              return (
+                <option key={index} value={item.Category.EngCategory}>
+                  {item.Category.GujCategory}{" "}
+                </option>
+              );
             })}
-
-            {/* <option>ભારત</option>
-            <option>રાજકારણ</option>
-            <option>રમત-જગત</option>
-            <option>વ્યાપાર</option> */}
           </Input>
           <br />
           <Label
             for="exampleFile"
             style={{ fontWeight: "500", marginLeft: "0.5%" }}
           >
-            Select Image Or Video
+            Select Image
           </Label>
           <Input
             id="exampleFile"
             name="file"
             type="file"
             style={{ width: "30%" }}
-            accept="image/jpeg, image/jpg, video/mp4"
-            onChange={(e) => {
-              setFiles(e.target.files[0]);
-            }}
+            accept="image/jpeg, image/jpg, "
+            onChange={handleChange} 
+              // setFiles(e.target.files[0]);
+            
           />
+          <br />
+
           <br />
 
           <Label

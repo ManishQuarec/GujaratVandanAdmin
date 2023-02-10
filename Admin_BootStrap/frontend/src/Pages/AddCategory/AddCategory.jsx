@@ -1,10 +1,32 @@
-import React, {useState} from 'react'
-import { Table, Card, CardTitle, CardBody, Col, Button } from "reactstrap";
+import React, {useState, useCallback, useMemo, useEffect} from 'react'
+import { Table, Card, CardTitle, CardBody, Col, Button, Alert } from "reactstrap";
 import AddCategoryButton from './AddCategoryButton';
-
+import DeleteCategoryButton from "./DeleteCategoryButton"
+import axios from "axios";
 function AddCategory() {
     const [addCategoryModal, setAddCategoryModal] = useState(false);
+ 
+    const [DeleteCategoryModal, setDeleteCategoryModal] = useState(false);
+    const [resData, setResData] = useState([]);
+    useEffect(() => {
+      axios.get(process.env.REACT_APP_API_BASE_URL+"/GetCategory").then((response) => {
+        setResData(response.data);
+      });
+  
+      return () => {};
+    }, [DeleteCategoryModal,addCategoryModal]);
 
+    // console.log(resData[0].Category.EngCategory)
+  
+
+
+    const DeletehandleShowNewsModal =useCallback( () => {
+      setDeleteCategoryModal(true);
+    }, [DeleteCategoryModal])
+  
+    const DeletehandleCloseNewsModal =useCallback( () => {
+      setDeleteCategoryModal(false);
+    }, [DeleteCategoryModal])
     
 
     const handleShowNewsModal = () => {
@@ -14,7 +36,7 @@ function AddCategory() {
     const handleCloseNewsModal = () => {
       setAddCategoryModal(false);
     };
-  return (
+  return(
     <React.Fragment>
       <div className="page-content">
         <Col lg={12}>
@@ -33,37 +55,56 @@ function AddCategory() {
               </span>
               <Button
                 type="submit"
+                color="success"
                 name="btn"
+                
                 onClick={handleShowNewsModal}
                 style={{
-                  margin: "20px 0px 10px 20px",
+                  margin: "10px 0px 10px 20px",
                 }}
               >
                 Add Categories
               </Button>
               {AddCategoryButton(addCategoryModal, handleCloseNewsModal)}
+
+              <Button
+                type="submit"
+                color="danger"
+                name="btn"
+                
+                onClick={DeletehandleShowNewsModal}
+                style={{
+                  margin: "10px 20px 10px 20px",
+                }}
+              >
+                Delete Categories
+              </Button>
+              {DeleteCategoryButton(DeleteCategoryModal, DeletehandleCloseNewsModal,resData)}
             </CardTitle>
             <CardBody>
               <Table hover>
                 <thead>
                   <tr className="text-center">
-                    <th>{"SR_NO"}</th>
+                    {/* <th>{"SR_NO"}</th> */}
                     <th>{"CATEGORY_NAME"}</th>
-                    <th>{"SUBCATEGORY_NAME"}</th>
-                    <th>{"CREATED_DATE"}</th>
+                    <th>{"CATEGORY_NAME _IN_ENGLISH"}</th>
+                    {/* <th>{"CREATED_DATE"}</th> */}
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td colSpan={19}>
-                      {/* <EmptyView
-                        title={"Sorry!"}
-                        discription={"No Categories Found"}
-                        bgcolor={"white"}
-                        src={Category}
-                      ></EmptyView> */}
-                    </td>
-                  </tr>
+                <tbody className="text-center">
+                  {/* <tr> */}
+                    {/* <td colSpan={19}> */}
+                    {resData.map((newsItem, index) => (
+                  <tr key={index} style={{width:"60rem"}}>
+                    {/* <th scope="row">{newsItem._Id}</th> */}
+                    <td>{newsItem.Category.GujCategory}</td>
+                    <td>{newsItem.Category.EngCategory}</td>
+                   
+                    {/* <td>{newsItem.Submitted}</td> */}
+                    </tr>
+                    ))}
+                    {/* </td> */}
+                  {/* </tr> */}
                 </tbody>
               </Table>
             </CardBody>
