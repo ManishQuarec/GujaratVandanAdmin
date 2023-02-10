@@ -37,6 +37,7 @@ function App() {
                 <Route path="/" element={<NewsAddingPage />} />
                 <Route path="/AddCategory" element={<AddCategory />} />
                 <Route path="/AddPaper" element={<AddPaper />} />
+                <Route path="/Addvideos" element={<AddVideos />} />
                 <Route path="/BreakingNews" element={<BreakingNews />} />
                 <Route path="/Login" element={<Login />} />
               </Routes>
