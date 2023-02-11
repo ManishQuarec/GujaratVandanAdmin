@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card, CardBody, FormGroup, Label, Input, Button } from "reactstrap";
+import { Card, CardBody, FormGroup, Label, Input, Button, Alert } from "reactstrap";
 import axios from "axios";
 
 function NewsAddingPage() {
 
   const handleChange= (e) =>{
+const image = e.target.files[0]
 
-    setFiles(e.target.files[0]);
+
+  if (!image.name.match(/\.(jpg|jpeg|png)$/)) {
+    console.log('select valid image.');
+   return false;
+  }
+    // setFiles(e.target.files[0]);
   }
   const NewsTittle = useRef("");
   const News = useRef("");
