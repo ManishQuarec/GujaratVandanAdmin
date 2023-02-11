@@ -14,6 +14,10 @@ import AddNewsPaper from "./AddNewsPaper";
 import DeleteNewsPaper from "./DeleteNewsPaper";
 
 function AddPaper() {
+
+
+
+  
   const [newsData, setNewsData] = useState([]);
   const [addBreakingnewsModal, setBreakingnewsModal] = useState(false);
   const [deleteBreakingnewsModal, setDeleteBreakingnewsModal] = useState(false);

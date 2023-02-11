@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import {
   Modal,
   Alert,
@@ -23,7 +23,13 @@ function AddNewsPaper(addBreakingnewsModal, handleCloseNewsModal) {
   const [startDate, setStartDate] = useState(new Date());
   const [files, setFiles] = useState();
 
+  useEffect(() => {
+    axios.get(process.env.REACT_APP_API_BASE_URL+"/GetCategory").then((response) => {
+      // setResData(response.data);
+    });
 
+    return () => {};
+  }, []);
 
   const dataValue = () => {
     const errorPopup = async(value) => {
@@ -35,8 +41,14 @@ function AddNewsPaper(addBreakingnewsModal, handleCloseNewsModal) {
       }, 3000);
     };
 console.log(files);
-    if (files == undefined){
-      let data = "Select News Paper"
+if (!files) {
+  let data = "Select News Paper"
+  errorPopup(data)
+
+}
+
+    if (!files.name.match(/\.(pdf)$/)){
+      let data = "Select News Paper in pdf format"
       errorPopup(data)
     }else {
     
@@ -109,6 +121,7 @@ console.log(files);
                 <DatePicker
                   selected={startDate}
                   onChange={(Date) => setStartDate(Date)}
+                  minDate={new Date()}
                   dateFormat="dd-MM-yyyy"
                   shouldHighlightWeekends
                 />
