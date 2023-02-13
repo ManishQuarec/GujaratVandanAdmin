@@ -12,24 +12,45 @@ import {
 
 import AddNewsPaper from "./AddNewsPaper";
 import DeleteNewsPaper from "./DeleteNewsPaper";
+import axios from "axios";
+import fileDownload from 'js-file-download'
 
 function AddPaper() {
-
-
-
-  
   const [newsData, setNewsData] = useState([]);
   const [addBreakingnewsModal, setBreakingnewsModal] = useState(false);
   const [deleteBreakingnewsModal, setDeleteBreakingnewsModal] = useState(false);
+
+  const download = (e) => {
+    console.log(e);
+    const data={url:e}
+    axios({
+      url:process.env.REACT_APP_API_BASE_URL+"/downloads",
+      // url:e,
+      method:"POST",
+      responseType:"blob",
+      data
+    
+    }).then((res)=>{
+      console.log(res);
+      fileDownload(res.data, "download.pdf")
+    })
+   }
+  console.log(newsData);
+
+  useEffect(() => {
+    axios.get(process.env.REACT_APP_API_BASE_URL + "/newsPaper").then((response) => {
+      setNewsData(response.data.response);
+    });
+
+    return () => {};
+  }, [addBreakingnewsModal, deleteBreakingnewsModal]);
   const handleShowDeleteModal = () => {
-     
     setDeleteBreakingnewsModal(true);
   };
 
   const handleCloseDeleteModal = () => {
     setDeleteBreakingnewsModal(false);
   };
-
 
   const handleShowNewsModal = () => {
     setBreakingnewsModal(true);
@@ -38,7 +59,6 @@ function AddPaper() {
   const handleCloseNewsModal = () => {
     setBreakingnewsModal(false);
   };
-
 
   return (
     <>
@@ -60,7 +80,7 @@ function AddPaper() {
             <Button
               type="submit"
               name="btn"
-                onClick={handleShowNewsModal}
+              onClick={handleShowNewsModal}
               style={{
                 margin: "20px 0px 10px 20px",
                 backgroundColor: "Green",
@@ -70,10 +90,10 @@ function AddPaper() {
             </Button>
             {AddNewsPaper(addBreakingnewsModal, handleCloseNewsModal)}
             <Button
-            // color="info"
+              // color="info"
               type="submit"
               name="btn"
-                onClick={handleShowDeleteModal}
+              onClick={handleShowDeleteModal}
               style={{
                 margin: "20px 0px 10px 20px",
                 backgroundColor: "Red yellow",
@@ -87,33 +107,25 @@ function AddPaper() {
             <Table hover>
               <thead>
                 <tr className="text-center">
-                  <th>Sr No.</th>
-                  <th> News Paper</th>
+                  {/* <th>Sr No.</th> */}
                   <th>Date</th>
-                  <th>Action</th>
+                  <th> News Paper</th>
+                  
                 </tr>
               </thead>
               <tbody className="text-center">
-                {/* {newsData.map((newsItem, index) => (
-              <tr key={index} style={{width:"60rem"}}>
-                <th scope="row">{newsItem.SrNo}</th>
-                <td>{newsItem.News}</td>
-                <td>{newsItem.Title}</td>
-                <td>{newsItem.Submitted}</td>
-                </tr>
-                ))} */}
+          
+                {newsData.map((newsItem, index) => (
                 <tr style={{ width: "60rem" }}>
-                  <th scope="row">3</th>
+                  <th scope="row">{newsItem.NewsPaperDate}</th>
                   <td>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Quaerat odit mollitia blanditiis dicta dignissimos vel
-                    minima, dolorem aliquid facere praesentium atque iste
-                    dolore, incidunt similique itaque cumque, reiciendis quo
-                    odio?
+                  <button onClick={(e)=>{download(newsItem.Path)}}>Download </button>
+                  
                   </td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
+                 
+                 
                 </tr>
+                 ))}  
               </tbody>
             </Table>
           </CardBody>
