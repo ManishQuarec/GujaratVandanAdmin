@@ -22,10 +22,10 @@ function AddPaper() {
 
   const download = (e) => {
     console.log(e);
-    const data={url:e}
+    const data={url: process.env.REACT_APP_API_BACKEND_URL+e}
     axios({
-      url:process.env.REACT_APP_API_BASE_URL+"/downloads",
-      // url:e,
+      // url:process.env.REACT_APP_API_BASE_URL+"/downloads",
+      url:e,
       method:"POST",
       responseType:"blob",
       data

@@ -23,13 +23,13 @@ function AddNewsPaper(addBreakingnewsModal, handleCloseNewsModal) {
   const [startDate, setStartDate] = useState(new Date());
   const [files, setFiles] = useState();
 
-  useEffect(() => {
-    axios.get(process.env.REACT_APP_API_BASE_URL+"/GetCategory").then((response) => {
-      // setResData(response.data);
-    });
+  // useEffect(() => {
+  //   axios.get(process.env.REACT_APP_API_BASE_URL+"/GetCategory").then((response) => {
+  //     // setResData(response.data);
+  //   });
 
-    return () => {};
-  }, []);
+  //   return () => {};
+  // }, []);
 
   const dataValue = () => {
     const errorPopup = async(value) => {
