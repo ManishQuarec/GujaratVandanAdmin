@@ -22,10 +22,11 @@ function AddPaper() {
 
   const download = (e) => {
     console.log(e);
-    const data={url: process.env.REACT_APP_API_BACKEND_URL+e}
+    const data={url: process.env.REACT_APP_API_BACKEND_URL+"/"+e}
+    console.log(data);
     axios({
-      // url:process.env.REACT_APP_API_BASE_URL+"/downloads",
-      url:e,
+      url:process.env.REACT_APP_API_BASE_URL+"/downloads",
+      // url:e,
       method:"POST",
       responseType:"blob",
       data
@@ -95,13 +96,13 @@ function AddPaper() {
               name="btn"
               onClick={handleShowDeleteModal}
               style={{
-                margin: "20px 0px 10px 20px",
+                margin: "20px 20px 10px 20px",
                 backgroundColor: "Red yellow",
               }}
             >
-              Update News Paper
+              Delete or Upadte New's Paper
             </Button>
-            {/* {DeleteNews(deleteBreakingnewsModal, handleCloseDeleteModal)} */}
+            {DeleteNewsPaper(deleteBreakingnewsModal, handleCloseDeleteModal)}
           </CardTitle>
           <CardBody>
             <Table hover>
