@@ -1,4 +1,4 @@
-import React, { useRef, useState,useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import {
   Modal,
   Alert,
@@ -23,13 +23,14 @@ function AddNewsPaper(addBreakingnewsModal, handleCloseNewsModal) {
   const [startDate, setStartDate] = useState(new Date());
   const [files, setFiles] = useState();
 
-  // useEffect(() => {
-  //   axios.get(process.env.REACT_APP_API_BASE_URL+"/GetCategory").then((response) => {
-  //     // setResData(response.data);
-  //   });
+  useEffect(() => {
 
-  //   return () => {};
-  // }, []);
+    // setStartDate(new Date());
+   
+   
+  }, )
+  
+
 
   const dataValue = () => {
     const errorPopup = async(value) => {
@@ -72,12 +73,14 @@ if (!files) {
         setSuccess(true);
         await setTimeout(() => {
           setSuccess(false);
+          setFiles("");
           handleCloseNewsModal();
         }, 2500);
       }
     }) .catch(async (error) => {
       console.log(error);
       console.log(error.response.data.message );
+      setFiles("");
 
       errorPopup( error.response.data.message  || error.message)
     });

@@ -22,7 +22,7 @@ function AddPaper() {
 
   const download = (e) => {
     console.log(e);
-    const data={url: process.env.REACT_APP_API_BACKEND_URL+"/"+e}
+    const data={url: e}
     console.log(data);
     axios({
       url:process.env.REACT_APP_API_BASE_URL+"/downloads",
@@ -94,13 +94,14 @@ function AddPaper() {
               // color="info"
               type="submit"
               name="btn"
+              color="danger"
               onClick={handleShowDeleteModal}
               style={{
                 margin: "20px 20px 10px 20px",
                 backgroundColor: "Red yellow",
               }}
             >
-              Delete or Upadte New's Paper
+              Delete New's Paper
             </Button>
             {DeleteNewsPaper(deleteBreakingnewsModal, handleCloseDeleteModal)}
           </CardTitle>
