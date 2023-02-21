@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardImg,
@@ -10,7 +10,7 @@ import {
   Col,
 } from "reactstrap";
 import AddNews from "./AddNews";
-import DeleteNews from './DeleteNews';
+import DeleteNews from "./DeleteNews";
 import axios from "axios";
 
 import "./BreakingNews.css";
@@ -23,47 +23,35 @@ function BreakingNews() {
 
   // console.log("rendering");
 
-  const [newsData, setNewsData] =useState([]);
+  const [newsData, setNewsData] = useState([]);
 
+  const [addBreakingnewsModal, setBreakingnewsModal] = useState(false);
+  const [deleteBreakingnewsModal, setDeleteBreakingnewsModal] = useState(false);
 
- 
+  const handleShowDeleteModal = () => {
+    setDeleteBreakingnewsModal(true);
+  };
 
+  const handleCloseDeleteModal = () => {
+    setDeleteBreakingnewsModal(false);
+  };
 
-  
-    const [addBreakingnewsModal, setBreakingnewsModal] = useState(false);
-    const [deleteBreakingnewsModal, setDeleteBreakingnewsModal] = useState(false);
-  
-    const handleShowDeleteModal = () => {
-     
-      setDeleteBreakingnewsModal(true);
-    };
+  const handleShowNewsModal = () => {
+    setBreakingnewsModal(true);
+  };
 
-    const handleCloseDeleteModal = () => {
-      setDeleteBreakingnewsModal(false);
-    };
+  const handleCloseNewsModal = () => {
+    setBreakingnewsModal(false);
+  };
 
-
-    const handleShowNewsModal = () => {
-      setBreakingnewsModal(true);
-    };
-  
-    const handleCloseNewsModal = () => {
-      setBreakingnewsModal(false);
-    };
-
-  
-
-    useEffect( () => {
-     
-      
-      axios.get(process.env.REACT_APP_API_BASE_URL+"/allBreakingNews").then(async(response)=> {
-       await setNewsData(response.data.response);
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_API_BASE_URL + "/allBreakingNews")
+      .then(async (response) => {
+        await setNewsData(response.data.response);
         // console.log(response.data.response);
-      })
-
-
-    
-    },[addBreakingnewsModal, deleteBreakingnewsModal])
+      });
+  }, [addBreakingnewsModal, deleteBreakingnewsModal]);
   return (
     <>
       <Col lg={12}>
@@ -86,7 +74,7 @@ function BreakingNews() {
               onClick={handleShowNewsModal}
               style={{
                 margin: "20px 0px 10px 20px",
-                backgroundColor:"Green"
+                backgroundColor: "Green",
               }}
             >
               Add Breaking News
@@ -94,15 +82,14 @@ function BreakingNews() {
             {AddNews(addBreakingnewsModal, handleCloseNewsModal)}
             <Button
               type="submit"
-              
               name="btn"
               onClick={handleShowDeleteModal}
               style={{
                 margin: "20px 0px 10px 20px",
-                backgroundColor:"red"
+                backgroundColor: "red",
               }}
             >
-             Delete Breaking News
+              Delete Breaking News
             </Button>
             {DeleteNews(deleteBreakingnewsModal, handleCloseDeleteModal)}
           </CardTitle>
@@ -118,13 +105,13 @@ function BreakingNews() {
               </thead>
               <tbody className="text-center">
                 {newsData.map((newsItem, index) => (
-                  <tr key={index} style={{width:"60rem"}}>
+                  <tr key={index} style={{ width: "60rem" }}>
                     <th scope="row">{newsItem.SrNo}</th>
                     <td>{newsItem.News}</td>
                     <td>{newsItem.Title}</td>
                     <td>{newsItem.Submitted}</td>
-                    </tr>
-                    ))}
+                  </tr>
+                ))}
                 {/* <tr style={{width:"60rem"}}>
                   <th scope="row">3</th>
                   <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quaerat odit mollitia blanditiis dicta dignissimos vel minima, dolorem aliquid facere praesentium atque iste dolore, incidunt similique itaque cumque, reiciendis quo odio?</td>
@@ -132,7 +119,6 @@ function BreakingNews() {
                   <td>@twitter</td>
                   
                 </tr> */}
-                
               </tbody>
             </Table>
           </CardBody>

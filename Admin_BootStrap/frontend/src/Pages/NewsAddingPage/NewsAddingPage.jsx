@@ -9,25 +9,40 @@ import {
   Alert,
 } from "reactstrap";
 import axios from "axios";
+import JoditEditor from "jodit-react";
 
 function NewsAddingPage() {
   const [alert, setAlert] = useState(false);
   const [failAlert, setFailAlert] = useState(false);
   const [message, setMessage] = useState("");
 
-  const handleChange = (e) => {
-    
+  const editor = useRef(null);
+  const [content, setContent] = useState("");
 
+  // const config = useMemo(
+  // 	{
+  // 		readonly: false, // all options from https://xdsoft.net/jodit/doc/,
+  // 		placeholder: placeholder || 'Start typings...'
+  // 	},
+  // 	[placeholder]
+  // );
+
+  const handleChange = (e) => {
     setFiles(e.target.files[0]);
+    setFiled(URL.createObjectURL(e.target.files[0]));
+    // console.log(URL.createObjectURL(e.target.files[0]));
+    // console.log(e.target.files[0]);
 
     // setFiles(e.target.files[0]);
   };
+
+
   const NewsTittle = useRef("");
   const News = useRef("");
   const Catego = useRef({});
   const [files, setFiles] = useState();
   // const [Videofiles, setVideoFiles] = useState();
-
+  const [filed, setFiled] = useState("");
   const [resData, setResData] = useState([]);
 
   const values = async () => {
@@ -52,7 +67,7 @@ function NewsAddingPage() {
       return false;
     }
 
-    if (NewsTittle.current.value == "" || News.current.value == "") {
+    if (NewsTittle.current.value == "" || editor.current.value == "") {
       setFailAlert(true);
       setMessage("Please Enter  News Tittle and News");
 
@@ -69,7 +84,7 @@ function NewsAddingPage() {
       // formData.append("Videofiles", Videofiles);
 
       await formData.append("Category", Catego.current.value);
-      await formData.append("News", News.current.value);
+      await formData.append("News", editor.current.value);
       await formData.append("NewsTittle", NewsTittle.current.value);
 
       console.log(Catego.current.value);
@@ -82,25 +97,20 @@ function NewsAddingPage() {
             setMessage("Successfully Added News");
 
             await setTimeout(() => {
-             
               setMessage("");
               setAlert(false);
             }, 2000);
           }
-        }).catch(async(error)=>{
-
+        })
+        .catch(async (error) => {
           setFailAlert(true);
           setMessage("Failed To Add News");
-  
+
           await setTimeout(() => {
-            
             setMessage("");
             setFailAlert(false);
-            
           }, 2000);
-     
-
-        })
+        });
     }
   };
 
@@ -118,17 +128,16 @@ function NewsAddingPage() {
   return (
     <>
       <Alert
-      isOpen={alert || failAlert}
+        isOpen={alert || failAlert}
         color={alert ? "success" : "danger"}
         style={{ width: "40%", marginLeft: "60%", marginTop: "1%" }}
-        
       >
         {message}
       </Alert>
       <Card
         style={{
           width: "69rem",
-          height: "46rem",
+          height: "auto",
           marginLeft: "5rem",
           marginTop: "3rem",
           marginBottom: "2rem",
@@ -174,6 +183,7 @@ function NewsAddingPage() {
               onChange={handleChange}
               // setFiles(e.target.files[0]);
             />
+             <img src={filed} />
             <br />
 
             <br />
@@ -201,12 +211,21 @@ function NewsAddingPage() {
             >
               News{" "}
             </Label>
-            <Input
+            {/* <Input
               id="exampleText"
               name="text"
               type="textarea"
               style={{ height: "20rem", width: "85%" }}
               innerRef={News}
+            /> */}
+
+            <JoditEditor
+              ref={editor}
+              value={content}
+              // config={config}
+              tabIndex={1} // tabIndex of textarea
+              onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+              onChange={(newContent) => {console.log(newContent)}}
             />
             <br />
             <Button

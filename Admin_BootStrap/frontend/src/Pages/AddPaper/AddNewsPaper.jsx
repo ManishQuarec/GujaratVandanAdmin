@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Alert,
@@ -23,17 +23,10 @@ function AddNewsPaper(addBreakingnewsModal, handleCloseNewsModal) {
   const [startDate, setStartDate] = useState(new Date());
   const [files, setFiles] = useState();
 
-  useEffect(() => {
-
-    // setStartDate(new Date());
-   
-   
-  }, )
-  
 
 
   const dataValue = () => {
-    const errorPopup = async(value) => {
+    const errorPopup = async (value) => {
       // console.log(value);
       setAlertMessage(value);
       setAlert(true);
@@ -41,66 +34,67 @@ function AddNewsPaper(addBreakingnewsModal, handleCloseNewsModal) {
         setAlert(false);
       }, 3000);
     };
-console.log(files);
-if (!files) {
-  let data = "Select News Paper"
-  errorPopup(data)
+    console.log(files);
+    if (!files) {
+      let data = "Select News Paper";
+      errorPopup(data);
+    }
 
-}
+    if (!files.name.match(/\.(pdf)$/)) {
+      let data = "Select News Paper in pdf format";
+      errorPopup(data);
+    } else {
+      let formData = new FormData();
+      formData.append("files", files);
+      let formattedDate = `${startDate.getDate()}-${
+        startDate.getMonth() + 1
+      }-${startDate.getFullYear()}`;
+      console.log(formattedDate);
 
-    if (!files.name.match(/\.(pdf)$/)){
-      let data = "Select News Paper in pdf format"
-      errorPopup(data)
-    }else {
-    
-    let formData = new FormData();
-    formData.append("files", files);
-    let formattedDate = `${startDate.getDate()}-${startDate.getMonth() + 1}-${startDate.getFullYear()}`;
-    console.log(formattedDate);
+      formData.append("Date", formattedDate);
+      formData.append("year", `${startDate.getFullYear()}`);
+      formData.append("month", `${startDate.getMonth() + 1}`);
 
-    formData.append("Date", formattedDate);
-    formData.append("year", `${startDate.getFullYear()}`);
-    formData.append("month", `${startDate.getMonth() + 1}`);
-    
-
-    axios.post(process.env.REACT_APP_API_BASE_URL+"/AddingNewsPaper", formData, {
-      headers: {
-        "Content-Type": "application/pdf",
-      },
-    }).then(async(response)=>{
-      if (response.data.message == "Successfully"){
-        setSuccessMessage(response.data.message  );
-        setSuccess(true);
-        await setTimeout(() => {
-          setSuccess(false);
+      axios
+        .post(
+          process.env.REACT_APP_API_BASE_URL + "/AddingNewsPaper",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/pdf",
+            },
+          }
+        )
+        .then(async (response) => {
+          if (response.data.message == "Successfully") {
+            setSuccessMessage(response.data.message);
+            setSuccess(true);
+            await setTimeout(() => {
+              setSuccess(false);
+              setFiles("");
+              handleCloseNewsModal();
+            }, 2500);
+          }
+        })
+        .catch(async (error) => {
+          console.log(error);
+          console.log(error.response.data.message);
           setFiles("");
-          handleCloseNewsModal();
-        }, 2500);
-      }
-    }) .catch(async (error) => {
-      console.log(error);
-      console.log(error.response.data.message );
-      setFiles("");
 
-      errorPopup( error.response.data.message  || error.message)
-    });
-
-  }
+          errorPopup(error.response.data.message || error.message);
+        });
+    }
   };
 
   return (
     <React.Fragment>
-      <Modal
-        isOpen={addBreakingnewsModal}
-        centered={true}
-        
-      >
+      <Modal isOpen={addBreakingnewsModal} centered={true}>
         <Alert
           color="success"
           style={{ width: "60%", marginLeft: "20%" }}
           isOpen={success}
         >
-          {successMessage + " "+"Paper Submited"}
+          {successMessage + " " + "Paper Submited"}
         </Alert>
         <Alert
           color="danger"
