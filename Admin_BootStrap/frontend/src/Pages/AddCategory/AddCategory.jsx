@@ -88,6 +88,7 @@ function AddCategory() {
                     {/* <th>{"SR_NO"}</th> */}
                     <th>{"CATEGORY_NAME"}</th>
                     <th>{"CATEGORY_NAME _IN_ENGLISH"}</th>
+                    <th>{"CATEGORY_COLOR_CODE"}</th>
                     {/* <th>{"CREATED_DATE"}</th> */}
                   </tr>
                 </thead>
@@ -99,6 +100,7 @@ function AddCategory() {
                     {/* <th scope="row">{newsItem._Id}</th> */}
                     <td>{newsItem.Category.GujCategory}</td>
                     <td>{newsItem.Category.EngCategory}</td>
+                    <td>{newsItem.Category.Colored}</td>
                    
                     {/* <td>{newsItem.Submitted}</td> */}
                     </tr>

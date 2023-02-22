@@ -19,16 +19,17 @@ function AddCategoryButton(addCategoryModal, handleCloseNewsModal) {
   const [alert, setAlert] = useState(false);
   const [failAlert, setFailAlert] = useState(false);
   const [message, setMessage] = useState("");
-
+  const colored = useRef("");
   const DataValues = async () => {
 
 
     const data = {
       EngInput: EngInput.current.value,
       GujInput: GujInput.current.value,
+      colored: colored.current.value,
     };
 
-    if ( data.EngInput == "" || data.GujInput == "") {
+    if ( data.EngInput == "" || data.GujInput == "" || data.colored == ""  ) {
      
       setFailAlert(true);
       setMessage("Please Enter Category in Gujarati and English");
@@ -101,6 +102,12 @@ function AddCategoryButton(addCategoryModal, handleCloseNewsModal) {
               </Label>{" "}
               &nbsp;
               <Input type="text" innerRef={EngInput} />
+
+              <Label style={{ fontWeight: "500" }}>
+                Color code in Hex:
+              </Label>{" "}
+              &nbsp;
+              <Input type="text" innerRef={colored} />
        
               <ModalFooter>
                 <Button type="button" onClick={DataValues}>
