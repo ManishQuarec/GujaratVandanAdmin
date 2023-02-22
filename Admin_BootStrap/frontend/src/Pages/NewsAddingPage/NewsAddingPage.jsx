@@ -18,6 +18,7 @@ function NewsAddingPage() {
 
   const editor = useRef(null);
   const [content, setContent] = useState("");
+  const [tittlecontent, setTittleContent] = useState("");
 
   // const config = useMemo(
   // 	{
@@ -46,6 +47,9 @@ function NewsAddingPage() {
   const [resData, setResData] = useState([]);
 
   const values = async () => {
+
+    console.log(editor.current.value , NewsTittle.current.value, News.current.value );
+
     if (!files) {
       setFailAlert(true);
       setMessage("Please Select Image in jpg or png");
@@ -85,6 +89,7 @@ function NewsAddingPage() {
 
       await formData.append("Category", Catego.current.value);
       await formData.append("News", editor.current.value);
+      await formData.append("NewsSubTittle", News.current.value);
       await formData.append("NewsTittle", NewsTittle.current.value);
 
       console.log(Catego.current.value);
@@ -183,7 +188,7 @@ function NewsAddingPage() {
               onChange={handleChange}
               // setFiles(e.target.files[0]);
             />
-             <img src={filed} />
+             <img  style={{ width: "30%" }}src={filed} alt="" />
             <br />
 
             <br />
@@ -192,7 +197,7 @@ function NewsAddingPage() {
               for="exampleEmail"
               style={{ fontWeight: "500", marginLeft: "0.5%" }}
             >
-              News Tittle
+              News Tittle (Only Upto 52 Characters)
             </Label>
 
             <Input
@@ -203,6 +208,30 @@ function NewsAddingPage() {
               style={{ width: "60%" }}
               innerRef={NewsTittle}
             />
+            <br />
+            <Label
+              for="exampleEmail"
+              style={{ fontWeight: "500", marginLeft: "0.5%" }}
+            >
+              News Sub Tittle
+            </Label>
+
+            <Input
+              id="exampleEmail"
+              name="text"
+              // placeholder="with a placeholder"
+              type="text"
+              style={{ width: "60%" }}
+              innerRef={News}
+            />
+            {/* <JoditEditor
+              ref={NewsTittle}
+              value={tittlecontent}
+              // config={config}
+              tabIndex={1} // tabIndex of textarea
+              onBlur={(newContent) => setTittleContent(newContent)} // preferred to use only this option to update the content for performance reasons
+              onChange={(newContent) => {console.log(newContent)}}
+            /> */}
             <br />
 
             <Label
