@@ -15,6 +15,9 @@ function NewsAddingPage() {
   const [alert, setAlert] = useState(false);
   const [failAlert, setFailAlert] = useState(false);
   const [message, setMessage] = useState("");
+  const config ={
+    placeholder: "Start Typing",
+  }
 
   const editor = useRef(null);
   const [content, setContent] = useState("");
@@ -37,9 +40,9 @@ function NewsAddingPage() {
     // setFiles(e.target.files[0]);
   };
 
-
   const NewsTittle = useRef("");
   const News = useRef("");
+  const Imgt = useRef("");
   const Catego = useRef({});
   const [files, setFiles] = useState();
   // const [Videofiles, setVideoFiles] = useState();
@@ -47,75 +50,126 @@ function NewsAddingPage() {
   const [resData, setResData] = useState([]);
 
   const values = async () => {
+    console.log(editor.current.value.split(" ").length);
+    // if(await(editor.current.value.split(' ').length) < 500 ) {
 
-    console.log(editor.current.value , NewsTittle.current.value, News.current.value );
+    //   setFailAlert(true);
+    //   setMessage("News Must be above 500 words");
 
-    if (!files) {
+    //   setTimeout(() => {
+    //     setFailAlert(false);
+    //     setMessage("");
+    //   }, 2000);
+
+    // }
+
+    if (NewsTittle.current.value.length >= 52) {
       setFailAlert(true);
-      setMessage("Please Select Image in jpg or png");
+      setMessage("News Tittle Should be less then 52 character");
 
       setTimeout(() => {
-        setFailAlert(false);
-        setMessage("");
-      }, 2000);
-    }
-
-    if (!files.name.match(/\.(jpg|jpeg|png)$/)) {
-      setFailAlert(true);
-      setMessage("Please Select Image in jpg or png");
-
-      setTimeout(() => {
-        setFailAlert(false);
-        setMessage("");
-      }, 2000);
-      return false;
-    }
-
-    if (NewsTittle.current.value == "" || editor.current.value == "") {
-      setFailAlert(true);
-      setMessage("Please Enter  News Tittle and News");
-
-      await setTimeout(() => {
         setFailAlert(false);
         setMessage("");
       }, 2000);
     } else {
-      const header = new Headers();
-      header.append("Access-Control-Allow-Origin", "*");
-      let formData = new FormData();
+      if (News.current.value.length >= 120) {
+        setFailAlert(true);
+        setMessage("News Sub Tittle Should be less then 120 character");
 
-      formData.append("files", files);
-      // formData.append("Videofiles", Videofiles);
+        setTimeout(() => {
+          setFailAlert(false);
+          setMessage("");
+        }, 2000);
+      } else {
+        console.log(News.current.value, News.current.value.length);
 
-      await formData.append("Category", Catego.current.value);
-      await formData.append("News", editor.current.value);
-      await formData.append("NewsSubTittle", News.current.value);
-      await formData.append("NewsTittle", NewsTittle.current.value);
-
-      console.log(Catego.current.value);
-
-      axios
-        .post(process.env.REACT_APP_API_BASE_URL + "/AddNewsDetail", formData)
-        .then(async (response) => {
-          if (response.status == 200) {
-            setAlert(true);
-            setMessage("Successfully Added News");
-
-            await setTimeout(() => {
-              setMessage("");
-              setAlert(false);
-            }, 2000);
-          }
-        })
-        .catch(async (error) => {
+        if (!files) {
           setFailAlert(true);
-          setMessage("Failed To Add News");
+          setMessage("Please Select Image in jpg or png");
 
-          await setTimeout(() => {
-            setMessage("");
+          setTimeout(() => {
             setFailAlert(false);
+            setMessage("");
           }, 2000);
-        });
+        } else {
+          if (!files.name.match(/\.(jpg|jpeg|png)$/)) {
+            setFailAlert(true);
+            setMessage("Please Select Image in jpg or png");
+
+            setTimeout(() => {
+              setFailAlert(false);
+              setMessage("");
+            }, 2000);
+            return false;
+          } else {
+            if (
+              NewsTittle.current.value == "" ||
+              editor.current.value == "" ||
+              News.current.value == ""
+            ) {
+              setFailAlert(true);
+              setMessage("Please Enter  News Tittle and News");
+
+              await setTimeout(() => {
+                setFailAlert(false);
+                setMessage("");
+              }, 2000);
+            } else {
+              const header = new Headers();
+              header.append("Access-Control-Allow-Origin", "*");
+              let formData = new FormData();
+
+              formData.append("files", files);
+              // formData.append("Videofiles", Videofiles);
+
+              await formData.append("Category", Catego.current.value);
+              await formData.append("News", editor.current.value);
+              await formData.append("NewsSubTittle", News.current.value);
+              await formData.append("NewsTittle", NewsTittle.current.value);
+
+              console.log(Catego.current.value);
+
+              axios
+                .post(
+                  process.env.REACT_APP_API_BASE_URL + "/AddNewsDetail",
+                  formData
+                )
+                .then(async (response) => {
+                  if (response.status == 200) {
+                    setAlert(true);
+                    setMessage("Successfully Added News");
+                     
+                    NewsTittle.current.value= "";
+                    News.current.value="";
+                    editor.value = "";
+                    editor.current.value ="";
+                    Imgt.current.value ="";
+                    setFiles("");
+                    setFiled("");
+                    setContent("");
+                    console.log(content );
+                    console.log(editor.current.value );
+                
+                    await setTimeout(() => {
+
+                      setMessage("");
+                      setAlert(false);
+                    }, 2000);
+                  }
+                })
+                .catch(async (error) => {
+                  setFailAlert(true);
+                  setMessage("Failed To Add News");
+
+                  await setTimeout(() => {
+                    setMessage("");
+                    setFailAlert(false);
+                  }, 2000);
+                });
+            }
+          }
+        }
+      }
     }
   };
 
@@ -132,13 +186,6 @@ function NewsAddingPage() {
   console.log(resData);
   return (
     <>
-      <Alert
-        isOpen={alert || failAlert}
-        color={alert ? "success" : "danger"}
-        style={{ width: "40%", marginLeft: "60%", marginTop: "1%" }}
-      >
-        {message}
-      </Alert>
       <Card
         style={{
           width: "69rem",
@@ -148,6 +195,13 @@ function NewsAddingPage() {
           marginBottom: "2rem",
         }}
       >
+        <Alert
+          isOpen={alert || failAlert}
+          color={alert ? "success" : "danger"}
+          style={{ width: "40%", marginLeft: "60%", marginTop: "1%" }}
+        >
+          {message}
+        </Alert>
         <CardBody>
           <FormGroup>
             <Label
@@ -180,15 +234,17 @@ function NewsAddingPage() {
               Select Image
             </Label>
             <Input
-              id="exampleFile"
+              // id="exampleFile"
+              innerRef={Imgt}
               name="file"
               type="file"
+              // value={}
               style={{ width: "30%" }}
-              accept="image/jpeg, image/jpg, "
+              accept="image/jpeg, image/jpg"
               onChange={handleChange}
               // setFiles(e.target.files[0]);
             />
-             <img  style={{ width: "30%" }}src={filed} alt="" />
+            <img style={{ width: "30%" }} src={filed} alt="" />
             <br />
 
             <br />
@@ -213,7 +269,7 @@ function NewsAddingPage() {
               for="exampleEmail"
               style={{ fontWeight: "500", marginLeft: "0.5%" }}
             >
-              News Sub Tittle
+              News Sub Tittle (Only Upto 120 Characters)
             </Label>
 
             <Input
@@ -250,11 +306,13 @@ function NewsAddingPage() {
 
             <JoditEditor
               ref={editor}
-              value={content}
-              // config={config}
+              value=""           
+               config={config}
               tabIndex={1} // tabIndex of textarea
               onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-              onChange={(newContent) => {console.log(newContent)}}
+              onChange={(newContent) => {
+                console.log(newContent);
+              }}
             />
             <br />
             <Button
